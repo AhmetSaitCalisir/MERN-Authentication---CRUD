@@ -8,6 +8,7 @@ const errorHandler = require("./middleware/error");
 connectDB();
 
 const auth = require("./routes/auth");
+const customer = require("./routes/customer");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.get("/", (req, res, next) => {
 });
 
 app.use("/api/auth", auth);
+app.use("/api/customer", customer);
 
 app.use(errorHandler);
 
