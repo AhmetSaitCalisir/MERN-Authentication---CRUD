@@ -1,1 +1,1 @@
-# MERN-Authentication---CRUD
+# MERN Authentication & CRUD
