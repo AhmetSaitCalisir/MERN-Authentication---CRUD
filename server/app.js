@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 
 const connectDB = require("./config/db");
+const errorHandler = require("./middleware/error");
 
 connectDB();
 
@@ -14,6 +15,8 @@ app.use(cors());
 app.get("/", (req, res, next) => {
   res.send("Api running");
 });
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 4545;
 
