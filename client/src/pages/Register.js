@@ -51,8 +51,8 @@ const Register = ({ history }) => {
         config
       );
 
-      localStorage.setItem("username", username);
       localStorage.setItem("authToken", data.token);
+      localStorage.setItem("username", data.username);
 
       history.push("/");
     } catch (error) {

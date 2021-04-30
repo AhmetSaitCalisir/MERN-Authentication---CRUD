@@ -8,7 +8,7 @@ import {
 } from "react-bootstrap-icons";
 
 const Navbar = ({ history }) => {
-  const logoutHandler = () => {
+  const logoutHandler = (e) => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("username");
   };
@@ -55,8 +55,7 @@ const Navbar = ({ history }) => {
                 </li>
               </ul>
               <ul className="form-inline my-2 my-lg-0 navbar-nav">
-                {localStorage.getItem("username") &&
-                localStorage.getItem("authToken") ? (
+                {localStorage.getItem("authToken") ? (
                   <li className="nav-item dropdown">
                     <span
                       className="nav-link dropdown-toggle"
