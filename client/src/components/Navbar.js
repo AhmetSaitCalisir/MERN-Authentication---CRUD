@@ -1,18 +1,28 @@
 import { Link } from "react-router-dom";
 
-import { PersonCircle, DoorClosedFill } from "react-bootstrap-icons";
+import {
+  PersonCircle,
+  DoorClosedFill,
+  DoorOpenFill,
+  PersonPlusFill,
+} from "react-bootstrap-icons";
 
-const Navbar = () => {
+const Navbar = ({ history }) => {
+  const logoutHandler = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("username");
+  };
+
   return (
     <div className="container">
       <div className="row">
         <div className="col">
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <Link class="navbar-brand" to="/">
+          <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <Link className="navbar-brand" to="/">
               MERN Authentication & CRUD
             </Link>
             <button
-              class="navbar-toggler"
+              className="navbar-toggler"
               type="button"
               data-toggle="collapse"
               data-target="#navbarSupportedContent"
@@ -20,46 +30,72 @@ const Navbar = () => {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span class="navbar-toggler-icon"></span>
+              <span className="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                  <Link class="nav-link" to="/">
+            <div
+              className="collapse navbar-collapse"
+              id="navbarSupportedContent"
+            >
+              <ul className="navbar-nav mr-auto">
+                <li className="nav-item">
+                  <Link className="nav-link" to="/">
                     Home
                   </Link>
                 </li>
-                <li class="nav-item">
-                  <Link class="nav-link" to="/customers">
+                <li className="nav-item">
+                  <Link className="nav-link" to="/customers">
                     Customers
                   </Link>
                 </li>
-                <li class="nav-item">
-                  <Link class="nav-link" to="/createcustomer">
+                <li className="nav-item">
+                  <Link className="nav-link" to="/createcustomer">
                     Create Customer
                   </Link>
                 </li>
               </ul>
-              <ul class="form-inline my-2 my-lg-0 navbar-nav">
-                <li class="nav-item dropdown">
-                  <span
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="navbarDropdown"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <PersonCircle /> User
-                  </span>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <Link class="dropdown-item" to="/exit">
-                      <DoorClosedFill /> Sign out
-                    </Link>
-                  </div>
-                </li>
+              <ul className="form-inline my-2 my-lg-0 navbar-nav">
+                {localStorage.getItem("username") &&
+                localStorage.getItem("authToken") ? (
+                  <li className="nav-item dropdown">
+                    <span
+                      className="nav-link dropdown-toggle"
+                      href="#"
+                      id="navbarDropdown"
+                      role="button"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <PersonCircle /> {localStorage.getItem("username")}
+                    </span>
+                    <div
+                      className="dropdown-menu"
+                      aria-labelledby="navbarDropdown"
+                    >
+                      <Link
+                        className="dropdown-item"
+                        onClick={logoutHandler}
+                        to="/"
+                      >
+                        <DoorClosedFill /> Sign out
+                      </Link>
+                    </div>
+                  </li>
+                ) : (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/login">
+                        <DoorOpenFill /> Login
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/register">
+                        <PersonPlusFill /> Register
+                      </Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </nav>
