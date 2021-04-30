@@ -20,10 +20,9 @@ const Customers = ({ history }) => {
           "http://localhost:4545/api/customer",
           config
         );
-        console.log(data);
+
         setCustomers(data.data);
       } catch (error) {
-        console.log(error);
         localStorage.removeItem("authToken");
         localStorage.removeItem("username");
         setError("You are not authorized please login");
