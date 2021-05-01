@@ -11,34 +11,34 @@ const Customers = ({ history }) => {
     minWidth: "300px",
   };
 
-  useEffect(() => {
-    const fetchCustomersData = async () => {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      };
-
-      try {
-        const { data } = await axios.get(
-          "http://localhost:4545/api/customer",
-          config
-        );
-
-        setCustomers(data.data);
-      } catch (error) {
-        if (error.response.status === 401) unauthorized(error, history);
-
-        setError(error.response.data.error);
-        setTimeout(() => {
-          setError("");
-        }, 5000);
-      }
+  const fetchCustomersData = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
     };
 
+    try {
+      const { data } = await axios.get(
+        "http://localhost:4545/api/customer",
+        config
+      );
+
+      setCustomers(data.data);
+    } catch (error) {
+      if (error.response.status === 401) unauthorized(error, history);
+
+      setError(error.response.data.error);
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+    }
+  };
+
+  useEffect(() => {
     fetchCustomersData();
-  }, [history]);
+  });
 
   return error ? (
     <div
@@ -58,7 +58,11 @@ const Customers = ({ history }) => {
       <div className="row">
         {customers.map((customer) => (
           <div className="col" key={customer._id} style={colStyle}>
-            <CustomerCart customer={customer} key={customer._id} />
+            <CustomerCart
+              customer={customer}
+              key={customer._id}
+              onDelete={fetchCustomersData}
+            />
           </div>
         ))}
       </div>

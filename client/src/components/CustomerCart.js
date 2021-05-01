@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { unauthorized } from "../utils/Errors";
 
 import {
   EnvelopeFill,
@@ -8,7 +10,7 @@ import {
   GearFill,
 } from "react-bootstrap-icons";
 
-const CustomerCart = ({ customer }) => {
+const CustomerCart = ({ customer, history, onDelete }) => {
   const colStyle = {
     marginBottom: "5px",
     marginTop: "5px",
@@ -18,6 +20,26 @@ const CustomerCart = ({ customer }) => {
   useEffect(() => {
     setCustomerLink(`/updatecustomer/${customer._id}`);
   }, [customer._id]);
+
+  const deleteCustomer = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+    };
+
+    try {
+      await axios.delete(
+        `http://localhost:4545/api/customer/${customer._id}`,
+        config
+      );
+      onDelete();
+    } catch (error) {
+      if (error.response.status === 401) unauthorized(error, history);
+      console.error(error);
+    }
+  };
 
   return (
     <div className="container-fluid" style={colStyle}>
@@ -47,12 +69,12 @@ const CustomerCart = ({ customer }) => {
                   </Link>
                 </div>
                 <div className="col">
-                  <Link
-                    to="/customer"
+                  <button
                     className="btn btn-outline-danger btn-sm btn-block"
+                    onClick={deleteCustomer}
                   >
                     <GearFill /> Delete
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
