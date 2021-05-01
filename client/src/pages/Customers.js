@@ -7,6 +7,10 @@ const Customers = ({ history }) => {
   const [error, setError] = useState("");
   const [customers, setCustomers] = useState([]);
 
+  const colStyle = {
+    minWidth: "300px",
+  };
+
   useEffect(() => {
     const fetchCustomersData = async () => {
       const config = {
@@ -24,7 +28,12 @@ const Customers = ({ history }) => {
 
         setCustomers(data.data);
       } catch (error) {
-        unauthorized(error, history);
+        if (error.response.status === 401) unauthorized(error, history);
+
+        setError(error.response.data.error);
+        setTimeout(() => {
+          setError("");
+        }, 5000);
       }
     };
 
@@ -48,7 +57,7 @@ const Customers = ({ history }) => {
     <div className="container">
       <div className="row">
         {customers.map((customer) => (
-          <div className="col" key={customer._id}>
+          <div className="col" key={customer._id} style={colStyle}>
             <CustomerCart customer={customer} key={customer._id} />
           </div>
         ))}

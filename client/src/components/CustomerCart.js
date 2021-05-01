@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import {
   EnvelopeFill,
@@ -12,6 +13,11 @@ const CustomerCart = ({ customer }) => {
     marginBottom: "5px",
     marginTop: "5px",
   };
+
+  const [customerLink, setCustomerLink] = useState("");
+  useEffect(() => {
+    setCustomerLink(`/updatecustomer/${customer._id}`);
+  }, [customer._id]);
 
   return (
     <div className="container-fluid" style={colStyle}>
@@ -34,7 +40,7 @@ const CustomerCart = ({ customer }) => {
               <div className="row">
                 <div className="col">
                   <Link
-                    to="/customer"
+                    to={customerLink}
                     className="btn btn-outline-warning btn-sm btn-block"
                   >
                     <GearFill /> Update
