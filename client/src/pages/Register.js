@@ -53,6 +53,7 @@ const Register = ({ history }) => {
 
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("username", data.username);
+      localStorage.setItem("userid", data.userid);
 
       history.push("/");
     } catch (error) {

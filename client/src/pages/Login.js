@@ -29,8 +29,11 @@ const Login = ({ history }) => {
         config
       );
 
+      console.log(data);
+
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("username", data.username);
+      localStorage.setItem("userid", data.userid);
 
       history.push("/");
     } catch (error) {

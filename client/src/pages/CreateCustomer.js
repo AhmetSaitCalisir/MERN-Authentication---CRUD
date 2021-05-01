@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { unauthorized } from "../utils/Errors";
 
 const CreateCustomer = ({ history }) => {
   const [error, setError] = useState("");
@@ -60,6 +61,34 @@ const CreateCustomer = ({ history }) => {
       }, 5000);
     }
   };
+
+  useEffect(() => {
+    const refreshToken = async () => {
+      const userid = localStorage.getItem("userid");
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      };
+
+      try {
+        const { data } = await axios.post(
+          "http://localhost:4545/api/auth/refreshtoken",
+          {
+            userid,
+          },
+          config
+        );
+        localStorage.setItem("authToken", data.token);
+      } catch (error) {
+        unauthorized(error, history);
+      }
+    };
+
+    refreshToken();
+  });
 
   return (
     <div className="container">

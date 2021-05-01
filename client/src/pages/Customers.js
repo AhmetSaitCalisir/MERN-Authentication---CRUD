@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import CustomerCart from "../components/CustomerCart";
+import { unauthorized } from "../utils/Errors";
 
 const Customers = ({ history }) => {
   const [error, setError] = useState("");
@@ -23,10 +24,7 @@ const Customers = ({ history }) => {
 
         setCustomers(data.data);
       } catch (error) {
-        localStorage.removeItem("authToken");
-        localStorage.removeItem("username");
-        setError("You are not authorized please login");
-        history.push("/login");
+        unauthorized(error, history);
       }
     };
 

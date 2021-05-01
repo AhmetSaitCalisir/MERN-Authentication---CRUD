@@ -1,3 +1,5 @@
+const jwt = require("jsonwebtoken");
+
 const User = require("../models/User");
 const ErrorResponse = require("../utils/errorResponse");
 
@@ -32,7 +34,20 @@ exports.login = async (req, res, next) => {
   }
 };
 
+exports.refreshToken = async (req, res, next) => {
+  const token = await jwt.sign(
+    { id: req.body.userid },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRE,
+    }
+  );
+  res.status(200).json({ success: true, token });
+};
+
 const sendToken = (user, statusCode, res) => {
   const token = user.getSignedJwtToken();
-  res.status(statusCode).json({ sucess: true, token, username: user.username });
+  res
+    .status(statusCode)
+    .json({ sucess: true, token, username: user.username, userid: user._id });
 };
