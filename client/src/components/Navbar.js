@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import {
   PersonCircle,
@@ -8,9 +9,18 @@ import {
 } from "react-bootstrap-icons";
 
 const Navbar = ({ history }) => {
+  const [token, setToken] = useState("");
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    setToken(localStorage.getItem("authToken"));
+    setUsername(localStorage.getItem("username"));
+  }, []);
+
   const logoutHandler = (e) => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("username");
+    localStorage.removeItem("userid");
   };
 
   return (
@@ -55,7 +65,7 @@ const Navbar = ({ history }) => {
                 </li>
               </ul>
               <ul className="form-inline my-2 my-lg-0 navbar-nav">
-                {localStorage.getItem("authToken") ? (
+                {token ? (
                   <li className="nav-item dropdown">
                     <span
                       className="nav-link dropdown-toggle"
@@ -66,7 +76,7 @@ const Navbar = ({ history }) => {
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      <PersonCircle /> {localStorage.getItem("username")}
+                      <PersonCircle /> {username}
                     </span>
                     <div
                       className="dropdown-menu"
